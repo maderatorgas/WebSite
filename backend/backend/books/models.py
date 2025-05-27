@@ -6,10 +6,10 @@ class Genre(models.Model):
 
 
 class Books(models.Model):
-    title = models.CharField()
-    genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
-    date_of_birth = models.DateField()
-    description = models.TextField()
-    price = models.FloatField()
-    rating = models.FloatField()
-    image = models.ImageField()
+    title = models.CharField(blank=False)
+    genre = models.ForeignKey(Genre, on_delete=models.CASCADE, blank=False)
+    date_of_birth = models.DateField(blank=False)
+    description = models.TextField(blank=False)
+    price = models.FloatField(blank=False)
+    rating = models.FloatField(blank=False)
+    image = models.ImageField(blank=False)
