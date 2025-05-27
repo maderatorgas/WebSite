@@ -1,5 +1,4 @@
 from django.db import models
-from backend.settings import STATIC_URL
 
 # Create your models here.
 class Books(models.Model):
