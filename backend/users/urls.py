@@ -1,13 +1,13 @@
 from django.urls import path
 from .views import (
-    UserListCreateView, UserDetailView, RegisterUserView,
+    UserListView, UserDetailView, RegisterUserView,
     PasswordResetView, PasswordResetConfirmView,
     DeleteAccountRequestView, DeleteAccountConfirmView
 )
 
 
 urlpatterns = [
-    path('', UserListCreateView.as_view(), name='user-list-create'),
+    path('', UserListView.as_view(), name='user-list-create'),
     path('<uuid:pk>/', UserDetailView.as_view(), name='user-detail'),
     path('register/', RegisterUserView.as_view(), name='user-register'),
     path('password-reset/', PasswordResetView.as_view(), name='password-reset'),

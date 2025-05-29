@@ -1,6 +1,7 @@
 from rest_framework import generics, mixins, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.urls import reverse
@@ -11,11 +12,11 @@ from .serializers import (
     PasswordResetSerializer, DeleteAccountSerializer
 )
 
+
 User = get_user_model()
 
 
-class UserListCreateView(mixins.ListModelMixin,
-                        mixins.CreateModelMixin,
+class UserListView(mixins.ListModelMixin,
                         generics.GenericAPIView):
     queryset = User.objects.all()
     serializer_class = UserCreateSerializer
@@ -23,9 +24,6 @@ class UserListCreateView(mixins.ListModelMixin,
     def get(self, request):
         self.serializer_class = UserSerializer
         return self.list(request)
-
-    def post(self, request):
-        return self.create(request)
 
 
 class UserDetailView(mixins.RetrieveModelMixin,
@@ -49,7 +47,8 @@ class UserDetailView(mixins.RetrieveModelMixin,
 class RegisterUserView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserCreateSerializer
-
+    permission_classes = [AllowAny]
+    
     def perform_create(self, serializer):
         user = serializer.save()
 
@@ -63,6 +62,8 @@ class RegisterUserView(generics.CreateAPIView):
 
 
 class PasswordResetView(APIView):
+    permission_classes = [AllowAny]
+    
     def post(self, request):
         serializer = PasswordResetSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -86,6 +87,8 @@ class PasswordResetView(APIView):
 
 
 class PasswordResetConfirmView(APIView):
+    permission_classes = [AllowAny]
+    
     def post(self, request, uid, token):
         password = request.data.get('password')
         if not password:
@@ -100,6 +103,8 @@ class PasswordResetConfirmView(APIView):
 
 
 class DeleteAccountRequestView(APIView):
+    permission_classes = [AllowAny]
+    
     def post(self, request):
         serializer = DeleteAccountSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -123,6 +128,8 @@ class DeleteAccountRequestView(APIView):
 
 
 class DeleteAccountConfirmView(APIView):
+    permission_classes = [AllowAny]
+    
     def get(self, request, uid, token):
         user = User.objects.filter(pk=uid).first()
         if user and account_action_token.check_token(user, token):
