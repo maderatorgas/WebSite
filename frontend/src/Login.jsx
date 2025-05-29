@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+axios.defaults.withCredentials = true; // дозволити cookies для всіх запитів
+
 const Login = () => {
   const [isRegistering, setIsRegistering] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
@@ -10,7 +12,6 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const navigate = useNavigate();
 
-  // Реєстрація користувача
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password || !username) {
@@ -19,14 +20,11 @@ const Login = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:8000/users/register/", {
-        username,
-        email,
-        password,
-      });
-
-      localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("userId", response.data.id);
+      await axios.post(
+        "http://localhost:8000/users/register/",
+        { username, email, password },
+        { withCredentials: true }
+      );
 
       alert("Успішна реєстрація!");
       navigate("/");
@@ -36,7 +34,6 @@ const Login = () => {
     }
   };
 
-  // Вхід користувача
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) {
@@ -45,13 +42,11 @@ const Login = () => {
     }
 
     try {
-      const fakeUserIdResponse = {
-        id: 12345,
-        token: "fake-jwt-token",
-      };
-
-      localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("userId", fakeUserIdResponse.id);
+      await axios.post(
+        "http://localhost:8000/users/login/",
+        { email, password },
+        { withCredentials: true }
+      );
 
       alert("Успішний вхід!");
       navigate("/");
@@ -61,7 +56,6 @@ const Login = () => {
     }
   };
 
-  // Відновлення паролю
   const handlePasswordReset = async (e) => {
     e.preventDefault();
     if (!email) {
@@ -79,7 +73,7 @@ const Login = () => {
   };
 
   return (
-    <div className="login-page-container"> {/* Змінено клас для уникнення конфлікту з body display:flex */}
+    <div className="login-page-container">
       <div className="login-container">
         {!isRegistering && !isResetting && (
           <>

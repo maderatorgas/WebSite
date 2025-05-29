@@ -2,18 +2,15 @@ import axios from "axios";
 
 const API = "http://localhost:8000"; // заміни на свій бекенд
 
-// ---------- Допоміжна функція для отримання токена ----------
-const getAuthHeader = () => {
-  const token = localStorage.getItem("token");
-  return token ? { headers: { Authorization: `Bearer ${token}` } } : {};
-};
+// Глобальна настройка axios для відправки cookie
+axios.defaults.withCredentials = true;
 
-// ---------- РЕЄСТРАЦІЯ ----------
+// РЕЄСТРАЦІЯ
 export const registerUser = async ({ username, email, password }) => {
   return await axios.post(`${API}/users/register/`, { username, email, password });
 };
 
-// ---------- СКИДАННЯ ПАРОЛЯ ----------
+// СКИДАННЯ ПАРОЛЯ
 export const resetPassword = async (email) => {
   return await axios.post(`${API}/users/password-reset/`, { email });
 };
@@ -24,7 +21,7 @@ export const confirmPasswordReset = async (uuid, token, newPassword) => {
   });
 };
 
-// ---------- ВИДАЛЕННЯ АККАУНТУ ----------
+// ВИДАЛЕННЯ АККАУНТУ
 export const deleteAccountRequest = async (email) => {
   return await axios.post(`${API}/users/delete-account/`, { email });
 };
@@ -33,54 +30,45 @@ export const confirmAccountDeletion = async (uuid, token) => {
   return await axios.get(`${API}/users/delete-account-confirm/${uuid}/${token}`);
 };
 
-
-// 🛠 GET /users/me — наприклад, для отримання даних себе
+// ОТРИМАННЯ ДАНИХ КОРИСТУВАЧА (авторизація через cookie автоматична)
 export const getCurrentUser = async () => {
-  return await axios.get(`${API}/users/`, getAuthHeader());
+  return await axios.get(`${API}/users/`);
 };
 
-// 🛠 PUT /users/me — оновити свої дані
 export const updateCurrentUser = async (updatedData) => {
-  return await axios.put(`${API}/users/`, updatedData, getAuthHeader());
+  return await axios.put(`${API}/users/`, updatedData);
 };
 
-// 📋 GET /users/<id> — доступно лише адміну
+// Адмінські методи — теж без ручного додавання заголовків
 export const getUserById = async (userId) => {
-  return await axios.get(`${API}/users/${userId}`, getAuthHeader());
+  return await axios.get(`${API}/users/${userId}`);
 };
 
-// 🛠 PUT /users/<id> — лише адмін
 export const updateUser = async (userId, updatedData) => {
-  return await axios.put(`${API}/users/${userId}`, updatedData, getAuthHeader());
+  return await axios.put(`${API}/users/${userId}`, updatedData);
 };
 
-// 🗑️ DELETE /users/<id> — лише адмін
 export const deleteUser = async (userId) => {
-  return await axios.delete(`${API}/users/${userId}`, getAuthHeader());
+  return await axios.delete(`${API}/users/${userId}`);
 };
 
-// ---------- КНИГИ ----------
-// 📚 GET books/ — доступно всім
+// КНИГИ — доступні всім, авторизація не потрібна
 export const getBooks = async () => {
   return await axios.get(`${API}/books/`);
 };
 
-// 📖 GET books/{id} — доступно всім
 export const getBookById = async (bookId) => {
   return await axios.get(`${API}/books/${bookId}`);
 };
 
-// ✏️ POST books/ — лише адмін
 export const addBook = async (bookData) => {
-  return await axios.post(`${API}/books/`, bookData, getAuthHeader());
+  return await axios.post(`${API}/books/`, bookData);
 };
 
-// 🛠 PUT books/{id} — лише адмін
 export const updateBook = async (bookId, updatedData) => {
-  return await axios.put(`${API}/books/${bookId}`, updatedData, getAuthHeader());
+  return await axios.put(`${API}/books/${bookId}`, updatedData);
 };
 
-// 🗑️ DELETE books/{id} — лише адмін
 export const deleteBook = async (bookId) => {
-  return await axios.delete(`${API}/books/${bookId}`, getAuthHeader());
+  return await axios.delete(`${API}/books/${bookId}`);
 };

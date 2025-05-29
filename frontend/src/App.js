@@ -14,10 +14,9 @@ function App() {
   const [filters, setFilters] = useState({ genre: "", year: "" });
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   const navigate = useNavigate();
 
-  // Фільтрація книг
+  // 🔎 Фільтрація книг
   const filterBooks = useCallback(() => {
     let filtered = [...books];
 
@@ -41,20 +40,20 @@ function App() {
     setFilteredBooks(filtered);
   }, [books, searchQuery, filters]);
 
-  // Перевірка авторизації
+  // ✅ Перевірка авторизації
   useEffect(() => {
     const status = localStorage.getItem("isLoggedIn");
     setIsLoggedIn(status === "true");
   }, []);
 
-  // Завантаження книг з API
+  // ✅ Завантаження книг з API
   useEffect(() => {
     const loadBooks = async () => {
       try {
-        const data = await getBooks(); // ✅ отримуємо книги через API
-        console.log("Отримані книги:", data);
-        setBooks(data);
-        setFilteredBooks(data);
+        const response = await getBooks(); // getBooks повертає axios response
+        console.log("Отримані книги:", response.data);
+        setBooks(response.data);
+        setFilteredBooks(response.data);
       } catch (error) {
         console.error("Помилка при завантаженні книг:", error);
       }
@@ -63,12 +62,12 @@ function App() {
     loadBooks();
   }, []);
 
-  // Автоматична фільтрація при зміні пошуку або фільтрів
+  // 🔁 Автоматична фільтрація
   useEffect(() => {
     filterBooks();
   }, [filterBooks]);
 
-  // Обробники подій
+  // 🎯 Обробники
   const handleFilterChange = (newFilters) => {
     setFilters((prev) => ({ ...prev, ...newFilters }));
   };
@@ -142,6 +141,5 @@ function App() {
     </div>
   );
 }
-
 
 export default App;
