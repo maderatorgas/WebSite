@@ -17,7 +17,8 @@ class BookListCreateView(mixins.ListModelMixin,
                          generics.GenericAPIView):
     queryset = Books.objects.all()
     serializer_class = BooksSerializer
-    permission_classes = [IsAdminOrReadOnly]
+    #permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [permissions.AllowAny]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['title', 'description']
     ordering_fields = ['price', 'rating']
@@ -52,7 +53,8 @@ class GenreListCreateView(mixins.ListModelMixin,
                           generics.GenericAPIView):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
-    permission_classes = [IsAdminOrReadOnly]
+    #permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [permissions.AllowAny]
 
     def get(self, request, *args, **kwargs): return self.list(request, *args, **kwargs)
     def post(self, request, *args, **kwargs): return self.create(request, *args, **kwargs)
