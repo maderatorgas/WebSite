@@ -21,7 +21,7 @@ const Login = () => {
 
     try {
       await axios.post(
-        "http://localhost:8000/users/register/",
+        "api/users/register/",
         { username, email, password },
         { withCredentials: true }
       );
@@ -42,7 +42,7 @@ const Login = () => {
     }
 
     try {
-      const response = await axios.post ("http://localhost:8000/users/token/",{
+      const response = await axios.post ("api/users/token/",{
         username: email,
         password: password},
 
@@ -70,7 +70,7 @@ const Login = () => {
     }
 
     try {
-      await axios.post("http://localhost:8000/users/password-reset/", { email });
+      await axios.post("api/users/password-reset/", { email });
       alert("Інструкції надіслано на email");
       setIsResetting(false);
     } catch (error) {

@@ -18,7 +18,7 @@ function ResetPasswordPage() {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:8000/users/password-reset-confirm/', {
+      const response = await axios.post('api/users/password-reset-confirm/', {
         uid: uid,
         token: token,
         password: newPassword,
