@@ -156,7 +156,7 @@ EMAIL_HOST_PASSWORD = ''
 DEFAULT_FROM_EMAIL = 'admin@example.com'
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000","http://localhost:80","http://localhost", "http://63.177.131.177:3000"
+    "http://localhost:3000","http://localhost:80","http://localhost", "http://63.177.131.177:80"
 ]
 
 CORS_ALLOW_CREDENTIALS = True
