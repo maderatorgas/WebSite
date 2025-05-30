@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "api/"; // заміни на свій бекенд
+const API = "api"; // заміни на свій бекенд
 
 // Глобальна настройка axios для відправки cookie
 axios.defaults.withCredentials = true;
