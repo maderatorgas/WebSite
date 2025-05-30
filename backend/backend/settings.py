@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "users",
     "books",
     "corsheaders",
+    'drf_yasg',
 ]
 
 REST_FRAMEWORK = {
